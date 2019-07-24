@@ -1,0 +1,9 @@
+F:\Visual Studio Projects\Gameboy Emulator\Gameboy Emulator\Gameboy Emulator\bin\Debug\Gameboy Emulator.exe.config
+F:\Visual Studio Projects\Gameboy Emulator\Gameboy Emulator\Gameboy Emulator\bin\Debug\Gameboy Emulator.exe
+F:\Visual Studio Projects\Gameboy Emulator\Gameboy Emulator\Gameboy Emulator\bin\Debug\Gameboy Emulator.pdb
+F:\Visual Studio Projects\Gameboy Emulator\Gameboy Emulator\Gameboy Emulator\obj\Debug\Gameboy Emulator.csprojAssemblyReference.cache
+F:\Visual Studio Projects\Gameboy Emulator\Gameboy Emulator\Gameboy Emulator\obj\Debug\Gameboy_Emulator.Properties.Resources.resources
+F:\Visual Studio Projects\Gameboy Emulator\Gameboy Emulator\Gameboy Emulator\obj\Debug\Gameboy Emulator.csproj.GenerateResource.cache
+F:\Visual Studio Projects\Gameboy Emulator\Gameboy Emulator\Gameboy Emulator\obj\Debug\Gameboy Emulator.csproj.CoreCompileInputs.cache
+F:\Visual Studio Projects\Gameboy Emulator\Gameboy Emulator\Gameboy Emulator\obj\Debug\Gameboy Emulator.exe
+F:\Visual Studio Projects\Gameboy Emulator\Gameboy Emulator\Gameboy Emulator\obj\Debug\Gameboy Emulator.pdb
