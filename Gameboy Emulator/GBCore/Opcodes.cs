@@ -596,6 +596,104 @@ namespace Gameboy_Emulator.GBCore
 					instructs[1] = (int)RSTTYPE.H38;
 					break;
 				#endregion
+				#region JR
+				case 0x20:
+					instructs[0] = (int)Instructs.JR;
+					instructs[1] = (int)JumpCodes.NOTZERO;
+					break;
+				case 0x30:
+					instructs[0] = (int)Instructs.JR;
+					instructs[1] = (int)JumpCodes.NOTCARRY;
+					break;
+				case 0x18:
+					instructs[0] = (int)Instructs.JR;
+					instructs[1] = (int)JumpCodes.ALWAYS;
+					break;
+				case 0x28:
+					instructs[0] = (int)Instructs.JR;
+					instructs[1] = (int)JumpCodes.ZERO;
+					break;
+				case 0x38:
+					instructs[0] = (int)Instructs.JR;
+					instructs[1] = (int)JumpCodes.CARRY;
+					break;
+				#endregion
+				#region OR
+				case 0xB0:
+					instructs[0] = (int)Instructs.OR;
+					instructs[1] = (int)Target.B;
+					break;
+				case 0xB1:
+					instructs[0] = (int)Instructs.OR;
+					instructs[1] = (int)Target.C;
+					break;
+				case 0xB2:
+					instructs[0] = (int)Instructs.OR;
+					instructs[1] = (int)Target.D;
+					break;
+				case 0xB3:
+					instructs[0] = (int)Instructs.OR;
+					instructs[1] = (int)Target.E;
+					break;
+				case 0xB4:
+					instructs[0] = (int)Instructs.OR;
+					instructs[1] = (int)Target.H;
+					break;
+				case 0xB5:
+					instructs[0] = (int)Instructs.OR;
+					instructs[1] = (int)Target.L;
+					break;
+				case 0xB6:
+					instructs[0] = (int)Instructs.OR;
+					instructs[1] = (int)Target.HL;
+					break;
+				case 0xB7:
+					instructs[0] = (int)Instructs.OR;
+					instructs[1] = (int)Target.A;
+					break;
+				case 0xF6:
+					instructs[0] = (int)Instructs.OR;
+					instructs[1] = (int)Target.NEXT;
+					break;
+				#endregion
+				#region AND
+				case 0xA0:
+					instructs[0] = (int)Instructs.AND;
+					instructs[1] = (int)Target.B;
+					break;
+				case 0xA1:
+					instructs[0] = (int)Instructs.AND;
+					instructs[1] = (int)Target.C;
+					break;
+				case 0xA2:
+					instructs[0] = (int)Instructs.AND;
+					instructs[1] = (int)Target.D;
+					break;
+				case 0xA3:
+					instructs[0] = (int)Instructs.AND;
+					instructs[1] = (int)Target.E;
+					break;
+				case 0xA4:
+					instructs[0] = (int)Instructs.AND;
+					instructs[1] = (int)Target.H;
+					break;
+				case 0xA5:
+					instructs[0] = (int)Instructs.AND;
+					instructs[1] = (int)Target.L;
+					break;
+				case 0xA6:
+					instructs[0] = (int)Instructs.AND;
+					instructs[1] = (int)Target.HL;
+					break;
+				case 0xA7:
+					instructs[0] = (int)Instructs.AND;
+					instructs[1] = (int)Target.A;
+					break;
+				case 0xE6:
+					instructs[0] = (int)Instructs.AND;
+					instructs[1] = (int)Target.NEXT;
+					break;
+				#endregion
 				default:
 					instructs[0] = -1;
 					break;

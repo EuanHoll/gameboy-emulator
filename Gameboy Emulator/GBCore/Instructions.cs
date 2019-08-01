@@ -28,7 +28,7 @@ namespace Gameboy_Emulator.GBCore
 
 		public static unsafe void JUMP(Registers* regs, CPU* cpu, JumpCodes type)
 		{
-			switch(type)
+			switch (type)
 			{
 				case JumpCodes.ALWAYS:
 					cpu->progCounter += 3;
@@ -68,14 +68,14 @@ namespace Gameboy_Emulator.GBCore
 			(*into) = (*from);
 			cpu->progCounter++;
 		}
-		
-		public static unsafe void LOAD8B16B(CPU* cpu, byte*into, ushort address)
+
+		public static unsafe void LOAD8B16B(CPU* cpu, byte* into, ushort address)
 		{
 			*into = cpu->memoryBus.ReadByte(address, cpu);
 			cpu->progCounter++;
 		}
 
-		public static unsafe void LOAD16B8B(CPU* cpu, ushort address, byte *from)
+		public static unsafe void LOAD16B8B(CPU* cpu, ushort address, byte* from)
 		{
 			cpu->memoryBus.SetByte(address, *from, cpu);
 			cpu->progCounter++;
@@ -83,7 +83,7 @@ namespace Gameboy_Emulator.GBCore
 
 		public static unsafe void POP(CPU* cpu, Target target)
 		{
-			switch(target)
+			switch (target)
 			{
 				case Target.AF:
 					cpu->registers.SetAF(cpu->memoryBus.ReadStack(cpu->stackpointer));
@@ -105,7 +105,7 @@ namespace Gameboy_Emulator.GBCore
 		public static unsafe void PUSH(CPU* cpu, Target target)
 		{
 			cpu->stackpointer--;
-			switch(target)
+			switch (target)
 			{
 				case Target.BC:
 					cpu->memoryBus.WriteStack(cpu->stackpointer, cpu->registers.GetBC());
@@ -158,7 +158,7 @@ namespace Gameboy_Emulator.GBCore
 			cpu->progCounter = cpu->memoryBus.ReadShort((ushort)(cpu->progCounter - 2), cpu);
 		}
 
-		public static unsafe void RET(CPU *cpu, JumpCodes jumpcode)
+		public static unsafe void RET(CPU* cpu, JumpCodes jumpcode)
 		{
 			bool jump = false;
 			switch (jumpcode)
@@ -260,5 +260,74 @@ namespace Gameboy_Emulator.GBCore
 					break;
 			}
 		}
+
+		public static unsafe void JR(CPU* cpu, JumpCodes jumpcode)
+		{
+			switch (jumpcode)
+			{
+				case JumpCodes.ALWAYS:
+					cpu->progCounter = (ushort)(cpu->memoryBus.ReadByte((ushort)(cpu->progCounter + 1), cpu) + cpu->progCounter);
+					break;
+				case JumpCodes.CARRY:
+					if (cpu->registers.GetFlagCarry())
+						cpu->progCounter = (ushort)(cpu->memoryBus.ReadByte((ushort)(cpu->progCounter + 1), cpu) + cpu->progCounter);
+					else
+						cpu->progCounter += 2;
+					break;
+				case JumpCodes.ZERO:
+					if (cpu->registers.GetFlagZero())
+						cpu->progCounter = (ushort)(cpu->memoryBus.ReadByte((ushort)(cpu->progCounter + 1), cpu) + cpu->progCounter);
+					else
+						cpu->progCounter += 2;
+					break;
+				case JumpCodes.NOTZERO:
+					if (!cpu->registers.GetFlagZero())
+						cpu->progCounter = (ushort)(cpu->memoryBus.ReadByte((ushort)(cpu->progCounter + 1), cpu) + cpu->progCounter);
+					else
+						cpu->progCounter += 2;
+					break;
+				case JumpCodes.NOTCARRY:
+					if (!cpu->registers.GetFlagCarry())
+						cpu->progCounter = (ushort)(cpu->memoryBus.ReadByte((ushort)(cpu->progCounter + 1), cpu) + cpu->progCounter);
+					else
+						cpu->progCounter += 2;
+					break;
+			}
+		}
+
+		public static unsafe void OR(CPU* cpu, byte* val, Target targ)
+		{
+			if (val == null && targ == Target.HL)
+				*val = cpu->memoryBus.ReadByte(cpu->registers.GetHL(), cpu);
+			else if (val == null && targ == Target.NEXT)
+			{
+				cpu->progCounter++;
+				*val = cpu->memoryBus.ReadByte(cpu->progCounter, cpu);
+			}
+			cpu->registers.a = (byte)(cpu->registers.a | (*val));
+			cpu->registers.ResetFlags();
+			if (cpu->registers.a == 0)
+				cpu->registers.SetFlagZero(true);
+			cpu->progCounter++;
+		}
+
+		public static unsafe void AND(CPU* cpu, byte* val, Target targ)
+		{
+			cpu->registers.ResetFlags();
+			if (val == null && targ == Target.HL)
+				*val = cpu->memoryBus.ReadByte(cpu->registers.GetHL(), cpu);
+			else if (val == null && targ == Target.NEXT)
+			{
+				cpu->progCounter++;
+				*val = cpu->memoryBus.ReadByte(cpu->progCounter, cpu);
+			}
+			if ((((*val & 0xf) & ((*val) & 0xf)) & 0x10) == 0x10)
+				cpu->registers.SetFlagHalfCarry(true);
+			cpu->registers.a = (byte)(cpu->registers.a & (*val));
+			if (cpu->registers.a == 0)
+				cpu->registers.SetFlagZero(true);
+			cpu->progCounter++;
+		}
+
 	}
 }

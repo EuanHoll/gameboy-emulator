@@ -17,6 +17,11 @@ namespace Gameboy_Emulator.GBCore
 		public byte l;
 		public byte flags;
 
+		public void ResetFlags()
+		{
+			flags = 0;
+		}
+
 		public ushort GetBC()
 		{
 			return ((ushort)((b << 8) + c));

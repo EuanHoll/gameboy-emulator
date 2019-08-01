@@ -84,6 +84,15 @@ namespace Gameboy_Emulator.GBCore
 				case Instructs.RST:
 					Instructions.RST(cpu, (RSTTYPE)targ);
 					break;
+				case Instructs.JR:
+					Instructions.JR(cpu, (JumpCodes)targ);
+					break;
+				case Instructs.AND:
+					Instructions.AND(cpu, GetTarget((Target)targ, &cpu->registers), (Target)targ);
+					break;
+				case Instructs.OR:
+					Instructions.OR(cpu, GetTarget((Target)targ, &cpu->registers), (Target)targ);
+					break;
 			}
 		}
 

@@ -28,7 +28,10 @@ namespace Gameboy_Emulator.GBCore
 		HALT,
 		INC,
 		DEC,
-		RST
+		RST,
+		JR,
+		OR,
+		AND
 	}
 
 	enum Target
@@ -45,7 +48,8 @@ namespace Gameboy_Emulator.GBCore
 		BC,
 		DE,
 		AF,
-		SP
+		SP,
+		NEXT
 	}
 
 	enum JumpCodes
