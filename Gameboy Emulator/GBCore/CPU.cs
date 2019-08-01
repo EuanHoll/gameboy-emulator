@@ -13,12 +13,14 @@ namespace Gameboy_Emulator.GBCore
 		public Registers registers;
 		public short progCounter;
 		public MemoryBus memoryBus;
+		public short stackpointer;
 
 		public CPU(short progCounter)
 		{
 			registers = new Registers();
 			this.progCounter = progCounter;
 			memoryBus = new MemoryBus();
+			stackpointer = 0;
 		}
 	}
 
@@ -41,6 +43,17 @@ namespace Gameboy_Emulator.GBCore
 		public short ReadShort(short address)
 		{
 			return ((short)((memory[address] << 8) + memory[address + 1]));
+		}
+
+		public short ReadStack(short address)
+		{
+			return ((short)(memory[address] + (memory[address + 1] << 8)));
+		}
+
+		public void WriteStack(short address, short data)
+		{
+			memory[address] = (byte)(data >> 8);
+			memory[address - 1] = (byte)(data & 0x00FF);
 		}
 	}
 

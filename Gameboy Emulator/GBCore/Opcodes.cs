@@ -405,6 +405,91 @@ namespace Gameboy_Emulator.GBCore
 					break;
 				#endregion
 				#endregion
+				#region POP
+				case 0xC1:
+					instructs[0] = (int)Instructs.POP;
+					instructs[1] = (int)Target.BC;
+					break;
+				case 0xD1:
+					instructs[0] = (int)Instructs.POP;
+					instructs[1] = (int)Target.DE;
+					break;
+				case 0xE1:
+					instructs[0] = (int)Instructs.POP;
+					instructs[1] = (int)Target.HL;
+					break;
+				case 0xF1:
+					instructs[0] = (int)Instructs.POP;
+					instructs[1] = (int)Target.AF;
+					break;
+				#endregion
+				#region PUSH
+				case 0xC5:
+					instructs[0] = (int)Instructs.PUSH;
+					instructs[1] = (int)Target.BC;
+					break;
+				case 0xD5:
+					instructs[0] = (int)Instructs.PUSH;
+					instructs[1] = (int)Target.DE;
+					break;
+				case 0xE5:
+					instructs[0] = (int)Instructs.PUSH;
+					instructs[1] = (int)Target.HL;
+					break;
+				case 0xF5:
+					instructs[0] = (int)Instructs.PUSH;
+					instructs[1] = (int)Target.AF;
+					break;
+				#endregion
+				#region RET
+				case 0xC0:
+					instructs[0] = (int)Instructs.RET;
+					instructs[1] = (int)JumpCodes.NOTZERO;
+					break;
+				case 0xD0:
+					instructs[0] = (int)Instructs.RET;
+					instructs[1] = (int)JumpCodes.NOTCARRY;
+					break;
+				case 0xC8:
+					instructs[0] = (int)Instructs.RET;
+					instructs[1] = (int)JumpCodes.ZERO;
+					break;
+				case 0xD8:
+					instructs[0] = (int)Instructs.RET;
+					instructs[1] = (int)JumpCodes.CARRY;
+					break;
+				case 0xC9:
+					instructs[0] = (int)Instructs.RET;
+					instructs[1] = (int)JumpCodes.ALWAYS;
+					break;
+				#endregion
+				#region CALL
+				case 0xC4:
+					instructs[0] = (int)Instructs.CALL;
+					instructs[1] = (int)JumpCodes.NOTZERO;
+					break;
+				case 0xD4:
+					instructs[0] = (int)Instructs.CALL;
+					instructs[1] = (int)JumpCodes.NOTCARRY;
+					break;
+				case 0xCC:
+					instructs[0] = (int)Instructs.CALL;
+					instructs[1] = (int)JumpCodes.ZERO;
+					break;
+				case 0xDC:
+					instructs[0] = (int)Instructs.CALL;
+					instructs[1] = (int)JumpCodes.CARRY;
+					break;
+				case 0xCD:
+					instructs[0] = (int)Instructs.CALL;
+					instructs[1] = (int)JumpCodes.ALWAYS;
+					break;
+				#endregion
+				#region NOP
+				case 0x00:
+					instructs[0] = (int)Instructs.NOP;
+					break;
+				#endregion
 				default:
 					instructs[0] = -1;
 					break;

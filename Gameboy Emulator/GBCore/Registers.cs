@@ -13,7 +13,6 @@ namespace Gameboy_Emulator.GBCore
 		public byte c;
 		public byte d;
 		public byte e;
-		public byte f;
 		public byte h;
 		public byte l;
 		public byte flags;
@@ -31,13 +30,13 @@ namespace Gameboy_Emulator.GBCore
 
 		public short GetAF()
 		{
-			return ((short)((a << 8) + f));
+			return ((short)((a << 8) + flags));
 		}
 
 		public void SetAF(short af)
 		{
 			this.a = (byte)(af >> 8);
-			this.f = (byte)(255 & af);
+			this.flags = (byte)(255 & af);
 		}
 
 		public short GetDE()

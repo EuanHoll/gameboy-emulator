@@ -9,11 +9,12 @@ namespace Gameboy_Emulator.GBCore
 {
 	class GBCPU
 	{
-
+		public static bool is_halted = false;
 		public unsafe void CPUStart()
 		{
 			CPU cpu = new CPU(0);
-			Step(&cpu);
+			while (!is_halted)
+				Step(&cpu);
 		}
 
 		private unsafe bool Step(CPU* cpu)
@@ -46,6 +47,24 @@ namespace Gameboy_Emulator.GBCore
 				case Instructs.LOAD8B16B:
 					Instructions.LOAD8B16B(cpu, GetTarget((Target)targ, &cpu->registers), GetAddressValue((Target)ar[1], &cpu->registers));
 					break;
+				case Instructs.POP:
+					Instructions.POP(cpu, (Target)targ);
+					break;
+				case Instructs.PUSH:
+					Instructions.PUSH(cpu, (Target)targ);
+					break;
+				case Instructs.CALL:
+					Instructions.CALL(cpu, (JumpCodes)targ);
+					break;
+				case Instructs.RET:
+					Instructions.RET(cpu, (JumpCodes)targ);
+					break;
+				case Instructs.NOP:
+					Instructions.NOP(cpu);
+					break;
+				case Instructs.HALT:
+					Instructions.HALT(cpu);
+					break;
 			}
 		}
 
@@ -64,7 +83,7 @@ namespace Gameboy_Emulator.GBCore
 				case Target.E:
 					return &regs->e;
 				case Target.F:
-					return &regs->f;
+					return &regs->flags;
 				case Target.H:
 					return &regs->h;
 				default:

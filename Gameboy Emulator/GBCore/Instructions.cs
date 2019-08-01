@@ -78,5 +78,127 @@ namespace Gameboy_Emulator.GBCore
 			cpu->memoryBus.SetByte(address, *from);
 			cpu->progCounter++;
 		}
+
+		public static unsafe void POP(CPU* cpu, Target target)
+		{
+			switch(target)
+			{
+				case Target.AF:
+					cpu->registers.SetAF(cpu->memoryBus.ReadStack(cpu->stackpointer));
+					break;
+				case Target.BC:
+					cpu->registers.SetBC(cpu->memoryBus.ReadStack(cpu->stackpointer));
+					break;
+				case Target.DE:
+					cpu->registers.SetDE(cpu->memoryBus.ReadStack(cpu->stackpointer));
+					break;
+				case Target.HL:
+					cpu->registers.SetHL(cpu->memoryBus.ReadStack(cpu->stackpointer));
+					break;
+			}
+			cpu->stackpointer += 2;
+			cpu->progCounter++;
+		}
+
+		public static unsafe void PUSH(CPU* cpu, Target target)
+		{
+			cpu->stackpointer--;
+			switch(target)
+			{
+				case Target.BC:
+					cpu->memoryBus.WriteStack(cpu->stackpointer, cpu->registers.GetBC());
+					break;
+				case Target.DE:
+					cpu->memoryBus.WriteStack(cpu->stackpointer, cpu->registers.GetDE());
+					break;
+				case Target.HL:
+					cpu->memoryBus.WriteStack(cpu->stackpointer, cpu->registers.GetHL());
+					break;
+				case Target.AF:
+					cpu->memoryBus.WriteStack(cpu->stackpointer, cpu->registers.GetAF());
+					break;
+			}
+			cpu->stackpointer--;
+			cpu->progCounter++;
+		}
+
+		public static unsafe void CALL(CPU* cpu, JumpCodes jumpcode)
+		{
+			bool jump = false;
+			switch (jumpcode)
+			{
+				case JumpCodes.ALWAYS:
+					jump = true;
+					break;
+				case JumpCodes.CARRY:
+					if (cpu->registers.GetFlagCarry())
+						jump = true;
+					break;
+				case JumpCodes.ZERO:
+					if (cpu->registers.GetFlagZero())
+						jump = true;
+					break;
+				case JumpCodes.NOTZERO:
+					if (!cpu->registers.GetFlagZero())
+						jump = true;
+					break;
+				case JumpCodes.NOTCARRY:
+					if (!cpu->registers.GetFlagCarry())
+						jump = true;
+					break;
+			}
+			cpu->progCounter += 3;
+			if (!jump)
+				return;
+			cpu->stackpointer--;
+			cpu->memoryBus.WriteStack(cpu->stackpointer, cpu->progCounter);
+			cpu->stackpointer--;
+			cpu->progCounter = cpu->memoryBus.ReadShort((short)(cpu->progCounter - 2));
+		}
+
+		public static unsafe void RET(CPU *cpu, JumpCodes jumpcode)
+		{
+			bool jump = false;
+			switch (jumpcode)
+			{
+				case JumpCodes.ALWAYS:
+					jump = true;
+					break;
+				case JumpCodes.CARRY:
+					if (cpu->registers.GetFlagCarry())
+						jump = true;
+					break;
+				case JumpCodes.ZERO:
+					if (cpu->registers.GetFlagZero())
+						jump = true;
+					break;
+				case JumpCodes.NOTZERO:
+					if (!cpu->registers.GetFlagZero())
+						jump = true;
+					break;
+				case JumpCodes.NOTCARRY:
+					if (!cpu->registers.GetFlagCarry())
+						jump = true;
+					break;
+			}
+			if (!jump)
+			{
+				cpu->progCounter++;
+				return;
+			}
+			cpu->progCounter = cpu->memoryBus.ReadStack(cpu->stackpointer);
+			cpu->stackpointer += 2;
+		}
+
+		public static unsafe void NOP(CPU* cpu)
+		{
+			cpu->progCounter++;
+		}
+
+		public static unsafe void HALT(CPU* cpu)
+		{
+			GBCPU.is_halted = true;
+			cpu->progCounter++;
+		}
 	}
 }
