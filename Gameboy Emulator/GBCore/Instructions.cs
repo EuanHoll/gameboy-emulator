@@ -11,6 +11,8 @@ namespace Gameboy_Emulator.GBCore
 
 		public static unsafe void ADD(Registers* regs, byte* targ, CPU* cpu)
 		{
+			if (targ == null)
+				*targ = cpu->memoryBus.ReadByte(cpu->registers.GetHL(), cpu);
 			byte val = *targ;
 			if ((((val & 0xf) + (regs->a & 0xf)) & 0x10) == 0x10)
 				regs->SetFlagHalfCarry(true);
@@ -36,25 +38,25 @@ namespace Gameboy_Emulator.GBCore
 					break;
 				case JumpCodes.CARRY:
 					if (regs->GetFlagCarry())
-						cpu->progCounter = cpu->memoryBus.ReadShort((short)(cpu->progCounter + 1));
+						cpu->progCounter = cpu->memoryBus.ReadShort((ushort)(cpu->progCounter + 1), cpu);
 					else
 						cpu->progCounter += 3;
 					break;
 				case JumpCodes.ZERO:
 					if (regs->GetFlagZero())
-						cpu->progCounter = cpu->memoryBus.ReadShort((short)(cpu->progCounter + 1));
+						cpu->progCounter = cpu->memoryBus.ReadShort((ushort)(cpu->progCounter + 1), cpu);
 					else
 						cpu->progCounter += 3;
 					break;
 				case JumpCodes.NOTZERO:
 					if (!regs->GetFlagZero())
-						cpu->progCounter = cpu->memoryBus.ReadShort((short)(cpu->progCounter + 1));
+						cpu->progCounter = cpu->memoryBus.ReadShort((ushort)(cpu->progCounter + 1), cpu);
 					else
 						cpu->progCounter += 3;
 					break;
 				case JumpCodes.NOTCARRY:
 					if (!regs->GetFlagCarry())
-						cpu->progCounter = cpu->memoryBus.ReadShort((short)(cpu->progCounter + 1));
+						cpu->progCounter = cpu->memoryBus.ReadShort((ushort)(cpu->progCounter + 1), cpu);
 					else
 						cpu->progCounter += 3;
 					break;
@@ -67,15 +69,15 @@ namespace Gameboy_Emulator.GBCore
 			cpu->progCounter++;
 		}
 		
-		public static unsafe void LOAD8B16B(CPU* cpu, byte*into, short address)
+		public static unsafe void LOAD8B16B(CPU* cpu, byte*into, ushort address)
 		{
-			*into = cpu->memoryBus.ReadByte(address);
+			*into = cpu->memoryBus.ReadByte(address, cpu);
 			cpu->progCounter++;
 		}
 
-		public static unsafe void LOAD16B8B(CPU* cpu, short address, byte *from)
+		public static unsafe void LOAD16B8B(CPU* cpu, ushort address, byte *from)
 		{
-			cpu->memoryBus.SetByte(address, *from);
+			cpu->memoryBus.SetByte(address, *from, cpu);
 			cpu->progCounter++;
 		}
 
@@ -153,7 +155,7 @@ namespace Gameboy_Emulator.GBCore
 			cpu->stackpointer--;
 			cpu->memoryBus.WriteStack(cpu->stackpointer, cpu->progCounter);
 			cpu->stackpointer--;
-			cpu->progCounter = cpu->memoryBus.ReadShort((short)(cpu->progCounter - 2));
+			cpu->progCounter = cpu->memoryBus.ReadShort((ushort)(cpu->progCounter - 2), cpu);
 		}
 
 		public static unsafe void RET(CPU *cpu, JumpCodes jumpcode)
@@ -199,6 +201,64 @@ namespace Gameboy_Emulator.GBCore
 		{
 			GBCPU.is_halted = true;
 			cpu->progCounter++;
+		}
+
+		public static unsafe void INC(CPU* cpu, byte* val)
+		{
+			if (val == null)
+				*val = cpu->memoryBus.ReadByte(cpu->registers.GetHL(), cpu);
+			if ((((1 & 0xf) + ((*val) & 0xf)) & 0x10) == 0x10)
+				cpu->registers.SetFlagHalfCarry(true);
+			(*val)++;
+			if ((*val) == 0)
+				cpu->registers.SetFlagZero(true);
+			cpu->progCounter++;
+		}
+
+		public static unsafe void DEC(CPU* cpu, byte* val)
+		{
+			if (val == null)
+				*val = cpu->memoryBus.ReadByte(cpu->registers.GetHL(), cpu);
+			if ((((*val) & 0xf) - ((1 & 0xf)) & 0x10) == 0x10)
+				cpu->registers.SetFlagHalfCarry(true);
+			cpu->registers.SetFlagSub(true);
+			(*val)--;
+			if ((*val) == 0)
+				cpu->registers.SetFlagZero(true);
+			cpu->progCounter++;
+		}
+
+		public static unsafe void RST(CPU* cpu, RSTTYPE rst)
+		{
+			cpu->memoryBus.WriteStack(cpu->stackpointer, cpu->progCounter);
+			cpu->stackpointer += 2;
+			switch (rst)
+			{
+				case RSTTYPE.H00:
+					cpu->progCounter++;
+					break;
+				case RSTTYPE.H08:
+					cpu->progCounter = 0x08;
+					break;
+				case RSTTYPE.H10:
+					cpu->progCounter = 0x10;
+					break;
+				case RSTTYPE.H18:
+					cpu->progCounter = 0x18;
+					break;
+				case RSTTYPE.H20:
+					cpu->progCounter = 0x20;
+					break;
+				case RSTTYPE.H28:
+					cpu->progCounter = 0x28;
+					break;
+				case RSTTYPE.H30:
+					cpu->progCounter = 0x30;
+					break;
+				case RSTTYPE.H38:
+					cpu->progCounter = 0x38;
+					break;
+			}
 		}
 	}
 }

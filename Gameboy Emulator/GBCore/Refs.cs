@@ -6,6 +6,13 @@ using System.Threading.Tasks;
 
 namespace Gameboy_Emulator.GBCore
 {
+	class Refs
+	{
+		public const ushort VRAM_START = 0x8000;
+		public const ushort VRAM_END = 0x9FFF;
+		public const ushort VRAM_SIZE = (VRAM_END - VRAM_START) + 1;
+	}
+
 	enum Instructs
 	{
 		ADD,
@@ -18,7 +25,10 @@ namespace Gameboy_Emulator.GBCore
 		CALL,
 		RET,
 		NOP,
-		HALT
+		HALT,
+		INC,
+		DEC,
+		RST
 	}
 
 	enum Target
@@ -46,5 +56,25 @@ namespace Gameboy_Emulator.GBCore
 		ZERO,
 		NOTZERO,
 		NOTCARRY
+	}
+
+	enum Colour
+	{
+		WHITE,
+		BLACK,
+		LIGHT_GREY,
+		DARK_GREY
+	}
+
+	enum RSTTYPE
+	{
+		H00,
+		H08,
+		H10,
+		H18,
+		H20,
+		H28,
+		H30,
+		H38
 	}
 }

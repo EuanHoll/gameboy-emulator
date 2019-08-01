@@ -17,45 +17,45 @@ namespace Gameboy_Emulator.GBCore
 		public byte l;
 		public byte flags;
 
-		public short GetBC()
+		public ushort GetBC()
 		{
-			return ((short)((b << 8) + c));
+			return ((ushort)((b << 8) + c));
 		}
 
-		public void SetBC(short bc)
+		public void SetBC(ushort bc)
 		{
 			this.b = (byte)(bc >> 8);
 			this.c = (byte)(255 & bc);
 		}
 
-		public short GetAF()
+		public ushort GetAF()
 		{
-			return ((short)((a << 8) + flags));
+			return ((ushort)((a << 8) + flags));
 		}
 
-		public void SetAF(short af)
+		public void SetAF(ushort af)
 		{
 			this.a = (byte)(af >> 8);
 			this.flags = (byte)(255 & af);
 		}
 
-		public short GetDE()
+		public ushort GetDE()
 		{
-			return ((short)((d << 8) + e));
+			return ((ushort)((d << 8) + e));
 		}
 
-		public void SetDE(short de)
+		public void SetDE(ushort de)
 		{
 			this.d = (byte)(de >> 8);
 			this.e = (byte)(255 & de);
 		}
 
-		public short GetHL()
+		public ushort GetHL()
 		{
-			return ((short)((h << 8) + l));
+			return ((ushort)((h << 8) + l));
 		}
 
-		public void SetHL(short hl)
+		public void SetHL(ushort hl)
 		{
 			this.h = (byte)(hl >> 8);
 			this.l = (byte)(255 & hl);

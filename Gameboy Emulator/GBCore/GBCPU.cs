@@ -7,23 +7,33 @@ using System.Threading.Tasks;
 
 namespace Gameboy_Emulator.GBCore
 {
-	class GBCPU
+	public class GBCPU
 	{
 		public static bool is_halted = false;
-		public unsafe void CPUStart()
+		public unsafe void CPUStart(byte[] rom)
 		{
 			CPU cpu = new CPU(0);
+			LoadRom(rom, &cpu);
 			while (!is_halted)
-				Step(&cpu);
+				if (!Step(&cpu))
+					break;
+		}
+
+		private unsafe void LoadRom(byte[] rom, CPU* cpu)
+		{
+			for (ushort i = 0; i < rom.Length; i++)
+			{
+				cpu->memoryBus.SetByte(i, rom[i], cpu);
+			}
 		}
 
 		private unsafe bool Step(CPU* cpu)
 		{
-			byte instruct = cpu->memoryBus.ReadByte(cpu->progCounter);
+			byte instruct = cpu->memoryBus.ReadByte(cpu->progCounter, cpu);
 			int[] intInstructions = Opcodes.GetInstruction(instruct, cpu);
 			if (intInstructions[0] == -1)
 			{
-				Console.WriteLine("Could not find opcode : {0:X} {0:X}.", instruct, cpu->memoryBus.ReadByte(cpu->progCounter));
+				Console.WriteLine("Could not find opcode : {0:X} {0:X}.", instruct, cpu->memoryBus.ReadByte(cpu->progCounter, cpu));
 				return (false);
 			}
 			Execute((Instructs)intInstructions[0], intInstructions[1], cpu, intInstructions);
@@ -65,6 +75,15 @@ namespace Gameboy_Emulator.GBCore
 				case Instructs.HALT:
 					Instructions.HALT(cpu);
 					break;
+				case Instructs.INC:
+					Instructions.INC(cpu, GetTarget((Target)targ, &cpu->registers));
+					break;
+				case Instructs.DEC:
+					Instructions.DEC(cpu, GetTarget((Target)targ, &cpu->registers));
+					break;
+				case Instructs.RST:
+					Instructions.RST(cpu, (RSTTYPE)targ);
+					break;
 			}
 		}
 
@@ -86,12 +105,13 @@ namespace Gameboy_Emulator.GBCore
 					return &regs->flags;
 				case Target.H:
 					return &regs->h;
-				default:
+				case Target.L:
 					return &regs->l;
 			}
+			return (null);
 		}
 
-		private unsafe short GetAddressValue(Target targ, Registers* regs)
+		private unsafe ushort GetAddressValue(Target targ, Registers* regs)
 		{
 			switch (targ)
 			{

@@ -52,14 +52,17 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
-    <Compile Include="GBCore\CPU.cs" />
+    <Compile Include="GBCore\Gameboy.cs" />
     <Compile Include="GBCore\GBCPU.cs" />
-    <Compile Include="GBCore\Instructs.cs" />
+    <Compile Include="GBCore\Refs.cs" />
     <Compile Include="GBCore\Instructions.cs" />
     <Compile Include="GBCore\Opcodes.cs" />
     <Compile Include="GBCore\Registers.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="Form1.resx">
+      <DependentUpon>Form1.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>

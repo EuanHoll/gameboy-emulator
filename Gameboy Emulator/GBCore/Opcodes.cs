@@ -14,7 +14,7 @@ namespace Gameboy_Emulator.GBCore
 			switch (code)
 			{
 				case 0xCB:
-					instructs = GetCBInstruction(cpu->memoryBus.ReadByte((short)(cpu->progCounter + 1)), cpu);
+					instructs = GetCBInstruction(cpu->memoryBus.ReadByte((ushort)(cpu->progCounter + 1), cpu), cpu);
 					break;
 				#region JUMP
 				case 0xC2:
@@ -66,6 +66,10 @@ namespace Gameboy_Emulator.GBCore
 				case 0x85:
 					instructs[0] = (int)Instructs.ADD;
 					instructs[1] = (int)Target.L;
+					break;
+				case 0x86:
+					instructs[0] = (int)Instructs.ADD;
+					instructs[1] = (int)Target.HL;
 					break;
 				case 0x87:
 					instructs[0] = (int)Instructs.ADD;
@@ -485,9 +489,111 @@ namespace Gameboy_Emulator.GBCore
 					instructs[1] = (int)JumpCodes.ALWAYS;
 					break;
 				#endregion
+				#region INC
+				case 0x04:
+					instructs[0] = (int)Instructs.INC;
+					instructs[1] = (int)Target.B;
+					break;
+				case 0x14:
+					instructs[0] = (int)Instructs.INC;
+					instructs[1] = (int)Target.D;
+					break;
+				case 0x24:
+					instructs[0] = (int)Instructs.INC;
+					instructs[1] = (int)Target.H;
+					break;
+				case 0x34:
+					instructs[0] = (int)Instructs.INC;
+					instructs[1] = (int)Target.HL;
+					break;
+				case 0x0C:
+					instructs[0] = (int)Instructs.INC;
+					instructs[1] = (int)Target.C;
+					break;
+				case 0x1C:
+					instructs[0] = (int)Instructs.INC;
+					instructs[1] = (int)Target.E;
+					break;
+				case 0x2C:
+					instructs[0] = (int)Instructs.INC;
+					instructs[1] = (int)Target.L;
+					break;
+				case 0x3C:
+					instructs[0] = (int)Instructs.INC;
+					instructs[1] = (int)Target.A;
+					break;
+				#endregion
+				#region DEC
+				case 0x05:
+					instructs[0] = (int)Instructs.DEC;
+					instructs[1] = (int)Target.B;
+					break;
+				case 0x15:
+					instructs[0] = (int)Instructs.DEC;
+					instructs[1] = (int)Target.D;
+					break;
+				case 0x25:
+					instructs[0] = (int)Instructs.DEC;
+					instructs[1] = (int)Target.H;
+					break;
+				case 0x35:
+					instructs[0] = (int)Instructs.DEC;
+					instructs[1] = (int)Target.HL;
+					break;
+				case 0x0D:
+					instructs[0] = (int)Instructs.DEC;
+					instructs[1] = (int)Target.C;
+					break;
+				case 0x1D:
+					instructs[0] = (int)Instructs.DEC;
+					instructs[1] = (int)Target.E;
+					break;
+				case 0x2D:
+					instructs[0] = (int)Instructs.DEC;
+					instructs[1] = (int)Target.L;
+					break;
+				case 0x3D:
+					instructs[0] = (int)Instructs.DEC;
+					instructs[1] = (int)Target.A;
+					break;
+				#endregion
 				#region NOP
 				case 0x00:
 					instructs[0] = (int)Instructs.NOP;
+					break;
+				#endregion
+				#region RST
+				case 0xC7:
+					instructs[0] = (int)Instructs.RST;
+					instructs[1] = (int)RSTTYPE.H00;
+					break;
+				case 0xD7:
+					instructs[0] = (int)Instructs.RST;
+					instructs[1] = (int)RSTTYPE.H10;
+					break;
+				case 0xE7:
+					instructs[0] = (int)Instructs.RST;
+					instructs[1] = (int)RSTTYPE.H20;
+					break;
+				case 0xF7:
+					instructs[0] = (int)Instructs.RST;
+					instructs[1] = (int)RSTTYPE.H30;
+					break;
+				case 0xCF:
+					instructs[0] = (int)Instructs.RST;
+					instructs[1] = (int)RSTTYPE.H08;
+					break;
+				case 0xDF:
+					instructs[0] = (int)Instructs.RST;
+					instructs[1] = (int)RSTTYPE.H18;
+					break;
+				case 0xEF:
+					instructs[0] = (int)Instructs.RST;
+					instructs[1] = (int)RSTTYPE.H28;
+					break;
+				case 0xFF:
+					instructs[0] = (int)Instructs.RST;
+					instructs[1] = (int)RSTTYPE.H38;
 					break;
 				#endregion
 				default:
