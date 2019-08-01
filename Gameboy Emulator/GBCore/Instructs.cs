@@ -8,7 +8,11 @@ namespace Gameboy_Emulator.GBCore
 {
 	enum Instructs
 	{
-		ADD
+		ADD,
+		LOAD8B16B,
+		LOAD8B,
+		JUMP,
+		LOAD16B8B
 	}
 
 	enum Target
@@ -25,5 +29,15 @@ namespace Gameboy_Emulator.GBCore
 		BC,
 		DE,
 		SP
+	}
+
+	enum JumpCodes
+	{
+		ALWAYS,
+		HL,
+		CARRY,
+		ZERO,
+		NOTZERO,
+		NOTCARRY
 	}
 }

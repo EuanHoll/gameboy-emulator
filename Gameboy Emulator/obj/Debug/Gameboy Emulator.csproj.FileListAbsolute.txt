@@ -7,3 +7,12 @@ F:\Visual Studio Projects\Gameboy Emulator\Gameboy Emulator\Gameboy Emulator\obj
 F:\Visual Studio Projects\Gameboy Emulator\Gameboy Emulator\Gameboy Emulator\obj\Debug\Gameboy Emulator.csproj.CoreCompileInputs.cache
 F:\Visual Studio Projects\Gameboy Emulator\Gameboy Emulator\Gameboy Emulator\obj\Debug\Gameboy Emulator.exe
 F:\Visual Studio Projects\Gameboy Emulator\Gameboy Emulator\Gameboy Emulator\obj\Debug\Gameboy Emulator.pdb
+F:\Git\gameboy-emulator\Gameboy Emulator\obj\Debug\Gameboy Emulator.csprojAssemblyReference.cache
+F:\Git\gameboy-emulator\Gameboy Emulator\obj\Debug\Gameboy_Emulator.Properties.Resources.resources
+F:\Git\gameboy-emulator\Gameboy Emulator\obj\Debug\Gameboy Emulator.csproj.GenerateResource.cache
+F:\Git\gameboy-emulator\Gameboy Emulator\obj\Debug\Gameboy Emulator.csproj.CoreCompileInputs.cache
+F:\Git\gameboy-emulator\Gameboy Emulator\obj\Debug\Gameboy Emulator.exe
+F:\Git\gameboy-emulator\Gameboy Emulator\obj\Debug\Gameboy Emulator.pdb
+F:\Git\gameboy-emulator\Gameboy Emulator\bin\Debug\Gameboy Emulator.exe.config
+F:\Git\gameboy-emulator\Gameboy Emulator\bin\Debug\Gameboy Emulator.exe
+F:\Git\gameboy-emulator\Gameboy Emulator\bin\Debug\Gameboy Emulator.pdb
