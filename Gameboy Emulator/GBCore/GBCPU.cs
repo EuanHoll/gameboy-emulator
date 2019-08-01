@@ -25,20 +25,28 @@ namespace Gameboy_Emulator.GBCore
 				Console.WriteLine("Could not find opcode : {0:X} {0:X}.", instruct, cpu->memoryBus.ReadByte(cpu->progCounter));
 				return (false);
 			}
-			Execute((Instructs)intInstructions[0], (Target)intInstructions[1], cpu);
+			Execute((Instructs)intInstructions[0], intInstructions[1], cpu, intInstructions);
 			return (true);
 		}
 
-		private unsafe void Execute(Instructs inst, Target targ, CPU* cpu)
+		private unsafe void Execute(Instructs inst, int targ, CPU* cpu, int[] ar)
 		{
-			byte* tbyte = GetTarget(targ, &cpu->registers);
 			switch (inst)
 			{
 				case Instructs.ADD:
-					Instructions.ADD(&cpu->registers, tbyte);
+					byte* tbyte = GetTarget((Target)targ, &cpu->registers);
+					Instructions.ADD(&cpu->registers, tbyte, cpu);
+					break;
+				case Instructs.JUMP:
+					Instructions.JUMP(&cpu->registers, cpu, (JumpCodes)(targ));
+					break;
+				case Instructs.LOAD8B:
+					Instructions.LOAD8B(cpu, GetTarget((Target)targ, &cpu->registers), GetTarget((Target)ar[2], &cpu->registers));
+					break;
+				case Instructs.LOAD8B16B:
+					Instructions.LOAD8B16B(cpu, GetTarget((Target)targ, &cpu->registers), GetAddressValue((Target)ar[1], &cpu->registers));
 					break;
 			}
-			cpu->progCounter++;
 		}
 
 		private unsafe byte* GetTarget(Target targ, Registers* regs)
@@ -61,6 +69,19 @@ namespace Gameboy_Emulator.GBCore
 					return &regs->h;
 				default:
 					return &regs->l;
+			}
+		}
+
+		private unsafe short GetAddressValue(Target targ, Registers* regs)
+		{
+			switch (targ)
+			{
+				case Target.HL:
+					return regs->GetHL();
+				case Target.BC:
+					return regs->GetBC();
+				default:
+					return regs->GetDE();
 			}
 		}
 

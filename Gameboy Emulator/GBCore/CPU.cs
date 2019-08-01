@@ -28,9 +28,19 @@ namespace Gameboy_Emulator.GBCore
 		[FieldOffset(0)]
 		public fixed byte memory[0xFFFF];
 
+		public void SetByte(short address, byte data)
+		{
+			memory[address] = data;
+		}
+
 		public byte ReadByte(short address)
 		{
 			return (memory[address]);
+		}
+
+		public short ReadShort(short address)
+		{
+			return ((short)((memory[address] << 8) + memory[address + 1]));
 		}
 	}
 
