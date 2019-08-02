@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Gameboy_Emulator.GBCore
 {
-	struct Registers
+	public struct Registers
 	{
 		public byte a;
 		public byte b;

@@ -13,11 +13,13 @@ using System.Windows.Forms;
 
 namespace Gameboy_Emulator
 {
-	public partial class Form1 : Form
+	public unsafe partial class Form1 : Form
 	{
 		public string fileloc = "";
 		public GBCPU gameboy;
+		public CPU* cpu;
 		public Thread GBThread;
+		public Thread GPUThread;
 
 		public Form1()
 		{
@@ -51,14 +53,17 @@ namespace Gameboy_Emulator
 			}
 			StartUpPanel.Visible = false;
 			GBPanel.Visible = true;
+			GBScreen.BackColor = Color.Green;
 			StartGB();
 		}
 
 		private void StartGB()
 		{
 			gameboy = new GBCPU();
-			GBThread = new Thread(() => { gameboy.CPUStart(File.ReadAllBytes(fileloc)); });
+			GBThread = new Thread(() => { gameboy.CPUStart(File.ReadAllBytes(fileloc), this); });
 			GBThread.Start();
+			GPUThread = new Thread(() => { GPUMonitor.MonitorGPU(this); });
+			GPUThread.Start();
 		}
 
 		private void InvalidFile()
@@ -70,6 +75,8 @@ namespace Gameboy_Emulator
 		{
 			GBThread.Abort();
 			GBThread.Join();
+			GPUThread.Abort();
+			GPUThread.Join();
 		}
 	}
 }

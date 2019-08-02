@@ -18,8 +18,9 @@ namespace Gameboy_Emulator.GBCore
 		ADD,
 		LOAD8B16B,
 		LOAD8B,
-		JUMP,
 		LOAD16B8B,
+		LOAD16BN,
+		JUMP,
 		PUSH,
 		POP,
 		CALL,
@@ -28,10 +29,12 @@ namespace Gameboy_Emulator.GBCore
 		HALT,
 		INC,
 		DEC,
+		DEC16,
 		RST,
 		JR,
 		OR,
-		AND
+		AND,
+		CCF
 	}
 
 	enum Target

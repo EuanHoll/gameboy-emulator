@@ -32,10 +32,11 @@
 			this.ChooseRombtn = new System.Windows.Forms.Button();
 			this.StartUpPanel = new System.Windows.Forms.Panel();
 			this.GBPanel = new System.Windows.Forms.Panel();
-			this.gbscreen = new System.Windows.Forms.PictureBox();
+			this.GBScreen = new System.Windows.Forms.PictureBox();
+			this.label1 = new System.Windows.Forms.Label();
 			this.StartUpPanel.SuspendLayout();
 			this.GBPanel.SuspendLayout();
-			((System.ComponentModel.ISupportInitialize)(this.gbscreen)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.GBScreen)).BeginInit();
 			this.SuspendLayout();
 			// 
 			// ChooseRomlbl
@@ -70,7 +71,8 @@
 			// 
 			// GBPanel
 			// 
-			this.GBPanel.Controls.Add(this.gbscreen);
+			this.GBPanel.Controls.Add(this.label1);
+			this.GBPanel.Controls.Add(this.GBScreen);
 			this.GBPanel.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.GBPanel.Location = new System.Drawing.Point(0, 0);
 			this.GBPanel.Name = "GBPanel";
@@ -78,13 +80,22 @@
 			this.GBPanel.TabIndex = 2;
 			this.GBPanel.Visible = false;
 			// 
-			// gbscreen
+			// GBScreen
 			// 
-			this.gbscreen.Location = new System.Drawing.Point(165, 0);
-			this.gbscreen.Name = "gbscreen";
-			this.gbscreen.Size = new System.Drawing.Size(477, 337);
-			this.gbscreen.TabIndex = 0;
-			this.gbscreen.TabStop = false;
+			this.GBScreen.Location = new System.Drawing.Point(165, 0);
+			this.GBScreen.Name = "GBScreen";
+			this.GBScreen.Size = new System.Drawing.Size(477, 337);
+			this.GBScreen.TabIndex = 0;
+			this.GBScreen.TabStop = false;
+			// 
+			// label1
+			// 
+			this.label1.AutoSize = true;
+			this.label1.Location = new System.Drawing.Point(352, 386);
+			this.label1.Name = "label1";
+			this.label1.Size = new System.Drawing.Size(35, 13);
+			this.label1.TabIndex = 1;
+			this.label1.Text = "label1";
 			// 
 			// Form1
 			// 
@@ -99,7 +110,8 @@
 			this.StartUpPanel.ResumeLayout(false);
 			this.StartUpPanel.PerformLayout();
 			this.GBPanel.ResumeLayout(false);
-			((System.ComponentModel.ISupportInitialize)(this.gbscreen)).EndInit();
+			this.GBPanel.PerformLayout();
+			((System.ComponentModel.ISupportInitialize)(this.GBScreen)).EndInit();
 			this.ResumeLayout(false);
 
 		}
@@ -110,7 +122,8 @@
 		private System.Windows.Forms.Button ChooseRombtn;
 		private System.Windows.Forms.Panel StartUpPanel;
 		private System.Windows.Forms.Panel GBPanel;
-		private System.Windows.Forms.PictureBox gbscreen;
+		public System.Windows.Forms.PictureBox GBScreen;
+		private System.Windows.Forms.Label label1;
 	}
 }
 

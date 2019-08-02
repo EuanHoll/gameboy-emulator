@@ -58,6 +58,7 @@
     <Compile Include="GBCore\Instructions.cs" />
     <Compile Include="GBCore\Opcodes.cs" />
     <Compile Include="GBCore\Registers.cs" />
+    <Compile Include="GPUMonitor.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Form1.resx">

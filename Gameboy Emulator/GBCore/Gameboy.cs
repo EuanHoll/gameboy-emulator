@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace Gameboy_Emulator.GBCore
 {
 
-	struct CPU
+	public struct CPU
 	{
 		public Registers registers;
 		public GPU gpu;
@@ -27,7 +27,7 @@ namespace Gameboy_Emulator.GBCore
 	}
 
 	[StructLayout(LayoutKind.Explicit)]
-	unsafe struct MemoryBus
+	public unsafe struct MemoryBus
 	{
 		[FieldOffset(0)]
 		public fixed byte memory[0xFFFF];
@@ -66,12 +66,13 @@ namespace Gameboy_Emulator.GBCore
 	}
 
 	[StructLayout(LayoutKind.Explicit)]
-	unsafe struct GPU
+	public unsafe struct GPU
 	{
 		[FieldOffset(0)]
 		public fixed byte memory[Refs.VRAM_SIZE];
 		[FieldOffset(1)]
 		public fixed int tile_map[512];
+		public static bool Updated = true;
 
 		public byte ReadMemory(ushort address)
 		{
@@ -114,6 +115,8 @@ namespace Gameboy_Emulator.GBCore
 					colour = Colour.LIGHT_GREY;
 				tile_map[x_in + 8 * (y_in + 8 * i)] = (int)colour;
 			}
+			lock("GPU Update")
+				Updated = true;
 		}
 	}
 }

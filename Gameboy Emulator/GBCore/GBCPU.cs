@@ -10,13 +10,15 @@ namespace Gameboy_Emulator.GBCore
 	public class GBCPU
 	{
 		public static bool is_halted = false;
-		public unsafe void CPUStart(byte[] rom)
+		public unsafe void CPUStart(byte[] rom, Form1 form)
 		{
 			CPU cpu = new CPU(0);
 			LoadRom(rom, &cpu);
+			form.cpu = &cpu;
 			while (!is_halted)
 				if (!Step(&cpu))
 					break;
+			Console.WriteLine("End");
 		}
 
 		private unsafe void LoadRom(byte[] rom, CPU* cpu)
@@ -92,6 +94,15 @@ namespace Gameboy_Emulator.GBCore
 					break;
 				case Instructs.OR:
 					Instructions.OR(cpu, GetTarget((Target)targ, &cpu->registers), (Target)targ);
+					break;
+				case Instructs.DEC16:
+					Instructions.DEC16(cpu, (Target)targ);
+					break;
+				case Instructs.CCF:
+					Instructions.CCF(cpu);
+					break;
+				case Instructs.LOAD16BN:
+					Instructions.LOAD16BN(cpu, (Target)targ);
 					break;
 			}
 		}

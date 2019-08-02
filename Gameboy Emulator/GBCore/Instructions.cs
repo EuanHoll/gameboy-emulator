@@ -228,6 +228,26 @@ namespace Gameboy_Emulator.GBCore
 			cpu->progCounter++;
 		}
 
+		public static unsafe void DEC16(CPU* cpu, Target targ)
+		{
+			switch (targ)
+			{
+				case Target.SP:
+					cpu->stackpointer--;
+					break;
+				case Target.HL:
+					cpu->registers.SetHL((ushort)(cpu->registers.GetHL() - 1));
+					break;
+				case Target.DE:
+					cpu->registers.SetDE((ushort)(cpu->registers.GetDE() - 1));
+					break;
+				case Target.BC:
+					cpu->registers.SetBC((ushort)(cpu->registers.GetBC() - 1));
+					break;
+			}
+			cpu->progCounter++;
+		}
+
 		public static unsafe void RST(CPU* cpu, RSTTYPE rst)
 		{
 			cpu->memoryBus.WriteStack(cpu->stackpointer, cpu->progCounter);
@@ -329,5 +349,35 @@ namespace Gameboy_Emulator.GBCore
 			cpu->progCounter++;
 		}
 
+		public static unsafe void CCF(CPU* cpu)
+		{
+			bool z = cpu->registers.GetFlagZero();
+			bool c = cpu->registers.GetFlagCarry();
+			cpu->registers.ResetFlags();
+			cpu->registers.SetFlagZero(z);
+			cpu->registers.SetFlagCarry(!c);
+			cpu->progCounter++;
+		}
+
+		public static unsafe void LOAD16BN(CPU* cpu, Target targ)
+		{
+			ushort val = cpu->memoryBus.ReadShort((ushort)(cpu->progCounter + 1), cpu);
+			switch (targ)
+			{
+				case Target.BC:
+					cpu->registers.SetBC(val);
+					break;
+				case Target.DE:
+					cpu->registers.SetDE(val);
+					break;
+				case Target.HL:
+					cpu->registers.SetHL(val);
+					break;
+				case Target.SP:
+					cpu->stackpointer = val;
+					break;
+			}
+			cpu->progCounter += 3;
+		}
 	}
 }

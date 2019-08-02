@@ -408,6 +408,24 @@ namespace Gameboy_Emulator.GBCore
 					instructs[2] = (int)Target.A;
 					break;
 				#endregion
+				#region N Into 16B
+				case 0x01:
+					instructs[0] = (int)Instructs.LOAD16BN;
+					instructs[1] = (int)Target.BC;
+					break;
+				case 0x11:
+					instructs[0] = (int)Instructs.LOAD16BN;
+					instructs[1] = (int)Target.DE;
+					break;
+				case 0x21:
+					instructs[0] = (int)Instructs.LOAD16BN;
+					instructs[1] = (int)Target.HL;
+					break;
+				case 0x31:
+					instructs[0] = (int)Instructs.LOAD16BN;
+					instructs[1] = (int)Target.SP;
+					break;
+				#endregion
 				#endregion
 				#region POP
 				case 0xC1:
@@ -692,6 +710,29 @@ namespace Gameboy_Emulator.GBCore
 				case 0xE6:
 					instructs[0] = (int)Instructs.AND;
 					instructs[1] = (int)Target.NEXT;
+					break;
+				#endregion
+				#region DEC16
+				case 0x0B:
+					instructs[0] = (int)Instructs.DEC16;
+					instructs[1] = (int)Target.BC;
+					break;
+				case 0x1B:
+					instructs[0] = (int)Instructs.DEC16;
+					instructs[1] = (int)Target.DE;
+					break;
+				case 0x2B:
+					instructs[0] = (int)Instructs.DEC16;
+					instructs[1] = (int)Target.HL;
+					break;
+				case 0x3B:
+					instructs[0] = (int)Instructs.DEC16;
+					instructs[1] = (int)Target.SP;
+					break;
+				#endregion
+				#region CCF
+				case 0x3F:
+					instructs[0] = (int)Instructs.CCF;
 					break;
 				#endregion
 				default:
